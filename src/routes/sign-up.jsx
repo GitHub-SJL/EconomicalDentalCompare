@@ -1,4 +1,5 @@
 import * as React from "react";
+import { v4 as uuidv4 } from "uuid";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -12,16 +13,45 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Copyright from "../hooks/copyright";
 
+import { useNavigate } from "react-router-dom";
+
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(event.currentTarget);
-    console.log({
+
+    const id = uuidv4();
+
+    const userInfo = {
+      id,
       name: data.get("name"),
       email: data.get("email"),
       password: data.get("password"),
-    });
+    };
+    console.log(userInfo);
+
+    try {
+      const response = await fetch(
+        "https://4xy85y2yag.execute-api.us-east-2.amazonaws.com/dev/user",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userInfo),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const responseData = await response.json();
+      navigate("/login");
+    } catch (error) {
+      console.log("An error occurred:", error);
+    }
   };
 
   return (
