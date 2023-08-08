@@ -30,7 +30,6 @@ export default function SignUp() {
       email: data.get("email"),
       password: data.get("password"),
     };
-    console.log(userInfo);
 
     try {
       const response = await fetch(
@@ -48,6 +47,7 @@ export default function SignUp() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const responseData = await response.json();
+
       navigate("/login");
     } catch (error) {
       console.log("An error occurred:", error);

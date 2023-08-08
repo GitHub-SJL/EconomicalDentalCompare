@@ -28,7 +28,9 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             알뜰치과비교
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" component={Link} to="/login">
+            로그인
+          </Button>
           <Button color="inherit" component={Link} to="/join">
             회원가입
           </Button>
