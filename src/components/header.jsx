@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -7,7 +7,14 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
+import { Context } from "../context/contextProvider";
 
+const getTokenFromLocalStorage = () => {
+  return localStorage.getItem("userToken");
+};
+const isLoggedIn = () => {
+  return getTokenFromLocalStorage() !== null;
+};
 export default function ButtonAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -28,8 +35,12 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             알뜰치과비교
           </Typography>
-          <Button color="inherit" component={Link} to="/login">
-            로그인
+          <Button
+            color="inherit"
+            component={Link}
+            to={isLoggedIn() ? "/logout" : "/login"}
+          >
+            {isLoggedIn() ? "로그아웃" : "로그인"}
           </Button>
           <Button color="inherit" component={Link} to="/join">
             회원가입
