@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
-import { Context } from "../context/contextProvider";
+import { Context } from "../../../context/contextProvider";
 
 const getTokenFromLocalStorage = () => {
   return localStorage.getItem("userToken");

@@ -9,13 +9,13 @@ export default function Index() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `/B551182/nonPaymentDamtInfoService/getNonPaymentItemClcdList?pageNo=1&numOfRows=2&ServiceKey=${SERVICE_KEY}`
+          `https://apis.data.go.kr/B551182/nonPaymentDamtInfoService/getNonPaymentItemClcdList?pageNo=1&numOfRows=544&ServiceKey=${SERVICE_KEY}`
         );
         const xmlResponse = await response.text();
         // XML to JSON
         const jsonObj = new XMLParser().parseFromString(xmlResponse);
-        const tag = jsonObj.getElementsByTagName("npayKorNm");
-        setData(tag);
+        const searchItem = jsonObj.getElementsByTagName("npayKorNm");
+        setData(searchItem);
       } catch (error) {
         console.error("API 요청 중 에러 발생:", error);
       }
@@ -29,7 +29,7 @@ export default function Index() {
       {data && (
         <ol>
           {data.map((item, index) => (
-            <li key={index}>{item}</li>
+            <li key={index}>{item.value}</li>
           ))}
         </ol>
       )}
