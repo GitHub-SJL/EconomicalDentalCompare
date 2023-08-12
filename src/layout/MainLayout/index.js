@@ -1,16 +1,44 @@
-import React from "react";
-import Header from "./Header/header";
-import SideBar from "./Drawer/sideBar";
-import { Outlet } from "react-router";
+import { useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
 
-export default function MainLayout() {
+// material-ui
+import { useTheme } from "@mui/material/styles";
+import { Box, Toolbar, useMediaQuery } from "@mui/material";
+
+// project import
+import Header from "./Header";
+
+// ==============================|| MAIN LAYOUT ||============================== //
+
+const MainLayout = () => {
+  const theme = useTheme();
+  const matchDownLG = useMediaQuery(theme.breakpoints.down("lg"));
+
+  // drawer toggler
+  const [open, setOpen] = useState(false);
+  const handleDrawerToggle = () => {
+    setOpen(!open);
+  };
+
+  // set media wise responsive drawer
+  useEffect(() => {
+    setOpen(!matchDownLG);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [matchDownLG]);
+
   return (
-    <>
-      <Header />
-      <SideBar />
-      <div id="detail" style={{ marginLeft: 310, marginTop: 65 }}>
+    <Box sx={{ display: "flex", width: "100%" }}>
+      <Header open={open} handleDrawerToggle={handleDrawerToggle} />
+      <Box
+        component="main"
+        sx={{ width: "100%", flexGrow: 1, p: { xs: 2, sm: 3 } }}
+      >
+        <Toolbar />
         <Outlet />
-      </div>
-    </>
+      </Box>
+    </Box>
   );
-}
+};
+
+export default MainLayout;
