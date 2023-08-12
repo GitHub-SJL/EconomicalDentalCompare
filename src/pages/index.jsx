@@ -9,7 +9,7 @@ export default function Index() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://apis.data.go.kr/B551182/nonPaymentDamtInfoService/getNonPaymentItemClcdList?pageNo=1&numOfRows=544&ServiceKey=${SERVICE_KEY}`
+          `https://apis.data.go.kr/B551182/nonPaymentDamtInfoService/getNonPaymentItemClcdList?pageNo=1&numOfRows=1&ServiceKey=${SERVICE_KEY}`
         );
         const xmlResponse = await response.text();
         // XML to JSON
