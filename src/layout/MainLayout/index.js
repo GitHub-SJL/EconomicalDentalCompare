@@ -7,8 +7,8 @@ import { useTheme } from "@mui/material/styles";
 import { Box, Toolbar, useMediaQuery } from "@mui/material";
 
 // project import
+import MainDrawer from "./Drawer";
 import Header from "./Header";
-
 // type
 import { openDrawer } from "store/slice/menuSlice.js";
 
@@ -26,7 +26,7 @@ const MainLayout = () => {
     setOpen(!open);
     dispatch(openDrawer({ drawerOpen: !open }));
   };
-  console.log(matchDownLG, "matchLG");
+
   // set media wise responsive drawer
   useEffect(() => {
     setOpen(!matchDownLG);
@@ -43,6 +43,7 @@ const MainLayout = () => {
   return (
     <Box sx={{ display: "flex", width: "100%" }}>
       <Header open={open} handleDrawerToggle={handleDrawerToggle} />
+      <MainDrawer open={open} handleDrawerToggle={handleDrawerToggle} />
       <Box
         component="main"
         sx={{ width: "100%", flexGrow: 1, p: { xs: 2, sm: 3 } }}
