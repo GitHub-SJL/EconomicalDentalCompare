@@ -1,26 +1,19 @@
-import {
-  createRoutesFromElements,
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-} from "react-router-dom";
-import Root from "./routes/root.jsx";
-import SignUp from "./routes/sign-up.jsx";
-import SignIn from "./routes/sign-in.jsx";
-function App() {
-  const router = createBrowserRouter(
-    createRoutesFromElements(
-      <Route path="/" element={<Root />}>
-        <Route path="join" element={<SignUp />}></Route>
-        <Route path="login" element={<SignIn />}></Route>
-      </Route>
-    )
-  );
+import React, { useState } from "react";
+import { RouterProvider } from "react-router-dom";
+import Routes from "./routes";
+import ThemeCustomization from "./themes";
 
+import { ContextProvider } from "./context/contextProvider.js";
+
+function App() {
   return (
-    <div className="App">
-      <RouterProvider router={router} />
-    </div>
+    <ThemeCustomization>
+      <ContextProvider>
+        <div className="App">
+          <RouterProvider router={Routes} />
+        </div>
+      </ContextProvider>
+    </ThemeCustomization>
   );
 }
 

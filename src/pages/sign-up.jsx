@@ -1,4 +1,5 @@
 import * as React from "react";
+import { v4 as uuidv4 } from "uuid";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -10,33 +11,47 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import Copyright from "../hooks/copyright";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="http://localhost:3000">
-        알뜰치과비교
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { useNavigate } from "react-router-dom";
 
-export default function SignIn() {
-  const handleSubmit = (event) => {
+export default function SignUp() {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+
+    const id = uuidv4();
+
+    const userInfo = {
+      id,
+      name: data.get("name"),
       email: data.get("email"),
       password: data.get("password"),
-    });
+    };
+
+    try {
+      const response = await fetch(
+        "https://4xy85y2yag.execute-api.us-east-2.amazonaws.com/dev/user",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userInfo),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const responseData = await response.json();
+
+      navigate("/login");
+    } catch (error) {
+      console.log("An error occurred:", error);
+    }
   };
 
   return (
@@ -57,16 +72,27 @@ export default function SignIn() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          로그인
+          회원가입
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+                autoComplete="given-name"
+                name="name"
+                required
+                fullWidth
+                id="name"
+                label="이름"
+                autoFocus
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="이메일 주소"
                 name="email"
                 autoComplete="email"
               />
@@ -76,7 +102,7 @@ export default function SignIn() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="비밀번호"
                 type="password"
                 id="password"
                 autoComplete="new-password"
@@ -85,7 +111,7 @@ export default function SignIn() {
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="아이디 기억하기"
+                label="위치기반서비스 이용약관(선택), 이메일 수신 동의를 포함합니다."
               />
             </Grid>
           </Grid>
@@ -95,12 +121,12 @@ export default function SignIn() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign Up
+            회원가입
           </Button>
           <Grid container justifyContent="center">
             <Grid item>
-              <Link href="/join" variant="body2">
-                회원가입 하러 가기
+              <Link href="/login" variant="body2">
+                이미 계정이 있으신가요?
               </Link>
             </Grid>
           </Grid>
